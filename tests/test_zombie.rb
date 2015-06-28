@@ -22,23 +22,15 @@ class TestZombie < MiniTest::Test
   end
 
   def test_self_deleted_from_lurker_list
-    # prey = Zombie.new
-    # prey.username = "PREY"
-    # stalker = Zombie.new
-    # stalker.username = "STALKER"
-
     @stalker.prey.push(@prey)
     @prey.stalkers.push(@stalker)
     @stalker.delete_prey("PREY")
     has_stalker = false
     @prey.stalkers.each do | stalker |
       if stalker.username == "STALKER"
-        # puts "THIS STALKER EXISTS"
         has_stalker = true
       end
     end
     assert_equal false, has_stalker
-    # puts prey.stalkers
-    # puts stalker.prey 
   end
 end
