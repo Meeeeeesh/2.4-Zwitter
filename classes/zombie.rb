@@ -4,10 +4,10 @@ class Zombie
   @@instances = []
 
   def initialize
-    self.tweets = []
-    self.stalkers = []
-    self.prey = []
-    self.image = 'http://vignette3.wikia.nocookie.net/lego/images/8/81/Zombie_Groom.png/revision/latest?cb=20120823164249'
+    @tweets = []
+    @stalkers = []
+    @prey = []
+    @image = 'http://vignette3.wikia.nocookie.net/lego/images/8/81/Zombie_Groom.png/revision/latest?cb=20120823164249'
     @@instances << self
   end
 
@@ -34,8 +34,29 @@ class Zombie
     t
   end
 
+  def retweet(tweet_id)
+    tweet = Tweet.find_tweet(tweet_id)
+    t = create_tweet(content: tweet.content)
+    t.retweeted = true
+    t.original_tweet = tweet
+    tweet.retweets += 1
+    t
+  end
+
+  def return_tweet(tweet_id)
+    return_tweet = nil
+    @tweets.each { | tweet | return_tweet = tweet if tweet.unique_id == tweet_id }
+    return_tweet
+  end
+
   def delete_tweet(tweet_id)
-    self.tweets.delete_if { | tweet | tweet.unique_id == unique_id }
+    tweet = return_tweet(tweet_id)
+    if tweet
+      if tweet.original_tweet
+        tweet.original_tweet.retweets -= 1
+      end
+    end
+    @tweets.delete_if { | tweet | tweet.unique_id == tweet_id }
   end
 
   def add_prey(username)

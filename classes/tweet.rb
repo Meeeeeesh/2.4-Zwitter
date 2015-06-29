@@ -1,5 +1,5 @@
 class Tweet
-  attr_accessor :zombie_id, :content, :location, :created_at, :unique_id, :favs
+  attr_accessor :zombie_id, :content, :location, :unique_id, :favs
 
   @@tweet_id = 0
   @@all_tweets = []

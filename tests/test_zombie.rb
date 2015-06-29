@@ -9,6 +9,9 @@ class TestZombie < MiniTest::Test
     @prey.username = "PREY"
     @stalker = Zombie.new
     @stalker.username = "STALKER"
+    @a_user.a_zombie = Zombie.new(username: "a_zombie", password: "a_password")
+    @a_tweet = @a_zombie.create_tweet(content: "favor flav - couch potato", location: nil)
+    @content = "Something brainy"
   end
 
   def test_class_method_find_user_by_username_returns_correct_user
@@ -33,4 +36,31 @@ class TestZombie < MiniTest::Test
     end
     assert_equal false, has_stalker
   end
+
+  def test_create_tweet
+    assert_equal "a_zombie", @a_tweet.username
+    assert_equal "Something brainy", @a_tweet.content
+    assert_equal nil, @a_tweet.location
+  end
+
+  def test_delete_tweet
+    @a_tweet.delete
+    assert_equal nil, @a_tweet.location
+    assert_equal nil, @a_tweet.content
+    assert_equal [], @a_retweet
+  end
+
+  def test_retweet
+    @a_re_zom = Zombie.new(username: "a_zombie", password: "a_password")
+    @a_retweet = @a_tweet.retweet(a_re_zom: @a_re_zom)
+    assert_equal "a_zombie", @a_retweet.user.username
+    assert_equal nil, @a_retweet, @a_retweet.location
+    out, _ = capture_io do
+      @re_tweet.view
+    end
+    assert_includes @a_re_zom.tweets, @re_tweet
+    assert_includes @tweet.re_tweet, @re_tweet
+    assert_includes @tweet.re_tweet_by, @a_re_zom
+  end
+
 end

@@ -21,12 +21,12 @@ class TestTweet < MiniTest::Test
   end
 
   def test_add_to_favs
-    added_fav = Favs.add_to_favs("a_fav")
+    added_fav = Favs.added_favs("a_fav")
     assert_equal "a_fav", added_fav.zombie
   end
 
   def test_add_to_favs_returns_nil_if_no_match_found
-    added_fav = Favs.add_to_favs("WHERE DA BWAINS AT?")
+    added_fav = Favs.added_favs("WHERE DA BWAINS AT?")
     assert_equal nil, added_fav
   end
 end
